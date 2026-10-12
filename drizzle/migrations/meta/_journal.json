@@ -8,6 +8,13 @@
       "when": 1791825179918,
       "tag": "0000_fyn_core_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791825335547,
+      "tag": "0001_fyn_seed_products",
+      "breakpoints": true
     }
   ]
 }
