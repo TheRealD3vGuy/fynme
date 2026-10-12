@@ -21,10 +21,19 @@ import {
 type SortKey = "newest" | "price_asc" | "price_desc" | "alpha" | "featured";
 
 export const Route = createFileRoute("/discover")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    q: typeof search.q === "string" ? search.q : "",
-    collection: typeof search.collection === "string" ? search.collection : "",
-    filter: typeof search.filter === "string" ? search.filter : "",
+  validateSearch: (
+    search: Record<string, unknown>,
+  ): {
+    q?: string | undefined;
+    collection?: string | undefined;
+    filter?: string | undefined;
+  } => ({
+    q: typeof search["q"] === "string" ? search["q"] : undefined,
+    collection:
+      typeof search["collection"] === "string"
+        ? search["collection"]
+        : undefined,
+    filter: typeof search["filter"] === "string" ? search["filter"] : undefined,
   }),
   head: () => ({
     meta: [
@@ -47,7 +56,10 @@ export const Route = createFileRoute("/discover")({
 });
 
 function DiscoverPage() {
-  const { q, collection, filter } = Route.useSearch();
+  const search = Route.useSearch();
+  const q = search.q ?? "";
+  const collection = search.collection ?? "";
+  const filter = search.filter ?? "";
   const navigate = useNavigate({ from: "/discover" });
   const [searchInput, setSearchInput] = useState(q);
   const [sort, setSort] = useState<SortKey>("newest");
