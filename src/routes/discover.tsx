@@ -52,7 +52,10 @@ export const Route = createFileRoute("/discover")({
 });
 
 function DiscoverPage() {
-  const { q, collection, filter } = Route.useSearch();
+  const search = Route.useSearch();
+  const q = search.q ?? "";
+  const collection = search.collection ?? "";
+  const filter = search.filter ?? "";
   const navigate = useNavigate({ from: "/discover" });
   const [searchInput, setSearchInput] = useState(q);
   const [sort, setSort] = useState<SortKey>("newest");
