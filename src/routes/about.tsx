@@ -31,17 +31,17 @@ function AboutPage() {
     queryFn: async () => {
       const { data } = await supabase
         .from("pages")
-        .select("title, page_sections(heading, body, position)")
+        .select("title, page_sections(type, content, position, is_visible)")
         .eq("slug", "about")
-        .eq("is_published", true)
+        .eq("status", "published")
         .maybeSingle();
       return data;
     },
   });
 
-  const sections = [...(page?.page_sections ?? [])].sort(
-    (a, b) => a.position - b.position,
-  );
+  const sections = [...(page?.page_sections ?? [])]
+    .filter((s) => s.is_visible)
+    .sort((a, b) => a.position - b.position);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-16">
@@ -50,18 +50,21 @@ function AboutPage() {
         {page?.title ?? "About Find Your North"}
       </h1>
       {sections.length > 0 ? (
-        sections.map((s, i) => (
-          <div key={i} className="mt-8">
-            {s.heading && (
-              <h2 className="font-display text-2xl font-semibold uppercase tracking-wide">
-                {s.heading}
-              </h2>
-            )}
-            <p className="mt-3 whitespace-pre-line leading-relaxed text-muted-foreground">
-              {s.body}
-            </p>
-          </div>
-        ))
+        sections.map((s, i) => {
+          const content = s.content as { heading?: string; body?: string };
+          return (
+            <div key={i} className="mt-8">
+              {content.heading && (
+                <h2 className="font-display text-2xl font-semibold uppercase tracking-wide">
+                  {content.heading}
+                </h2>
+              )}
+              <p className="mt-3 whitespace-pre-line leading-relaxed text-muted-foreground">
+                {content.body}
+              </p>
+            </div>
+          );
+        })
       ) : (
         <p className="mt-8 leading-relaxed text-muted-foreground">
           Find Your North is an independent clothing and sticker brand born in

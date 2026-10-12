@@ -16,7 +16,7 @@ import {
 export const Route = createFileRoute("/contact")({
   validateSearch: (
     search: Record<string, unknown>,
-  ): { category?: string } => ({
+  ): { category?: string | undefined } => ({
     category:
       typeof search["category"] === "string" ? search["category"] : undefined,
   }),

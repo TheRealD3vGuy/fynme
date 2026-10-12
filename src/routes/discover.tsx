@@ -23,7 +23,11 @@ type SortKey = "newest" | "price_asc" | "price_desc" | "alpha" | "featured";
 export const Route = createFileRoute("/discover")({
   validateSearch: (
     search: Record<string, unknown>,
-  ): { q?: string; collection?: string; filter?: string } => ({
+  ): {
+    q?: string | undefined;
+    collection?: string | undefined;
+    filter?: string | undefined;
+  } => ({
     q: typeof search["q"] === "string" ? search["q"] : undefined,
     collection:
       typeof search["collection"] === "string"
