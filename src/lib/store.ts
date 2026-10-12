@@ -54,11 +54,11 @@ export function mapProduct(row: any): ProductCardData {
 }
 
 export async function fetchProducts(options?: {
-  collectionSlug?: string;
-  featuredOnly?: boolean;
-  stickersOnly?: boolean;
-  search?: string;
-  saleOnly?: boolean;
+  collectionSlug?: string | undefined;
+  featuredOnly?: boolean | undefined;
+  stickersOnly?: boolean | undefined;
+  search?: string | undefined;
+  saleOnly?: boolean | undefined;
 }): Promise<ProductCardData[]> {
   let query = supabase
     .from("products")

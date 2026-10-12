@@ -22,9 +22,10 @@ type SortKey = "newest" | "price_asc" | "price_desc" | "alpha" | "featured";
 
 export const Route = createFileRoute("/discover")({
   validateSearch: (search: Record<string, unknown>) => ({
-    q: typeof search.q === "string" ? search.q : "",
-    collection: typeof search.collection === "string" ? search.collection : "",
-    filter: typeof search.filter === "string" ? search.filter : "",
+    q: typeof search["q"] === "string" ? search["q"] : "",
+    collection:
+      typeof search["collection"] === "string" ? search["collection"] : "",
+    filter: typeof search["filter"] === "string" ? search["filter"] : "",
   }),
   head: () => ({
     meta: [
