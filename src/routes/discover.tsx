@@ -21,11 +21,15 @@ import {
 type SortKey = "newest" | "price_asc" | "price_desc" | "alpha" | "featured";
 
 export const Route = createFileRoute("/discover")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    q: typeof search["q"] === "string" ? search["q"] : "",
+  validateSearch: (
+    search: Record<string, unknown>,
+  ): { q?: string; collection?: string; filter?: string } => ({
+    q: typeof search["q"] === "string" ? search["q"] : undefined,
     collection:
-      typeof search["collection"] === "string" ? search["collection"] : "",
-    filter: typeof search["filter"] === "string" ? search["filter"] : "",
+      typeof search["collection"] === "string"
+        ? search["collection"]
+        : undefined,
+    filter: typeof search["filter"] === "string" ? search["filter"] : undefined,
   }),
   head: () => ({
     meta: [
