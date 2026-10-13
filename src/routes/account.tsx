@@ -1,8 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export const Route = createFileRoute("/account")({
   head: () => ({
@@ -67,6 +69,7 @@ function AccountPage() {
           Your order history will appear here once you place your first order.
         </p>
       </div>
+      <ChangePasswordCard />
       <Button
         variant="outline"
         className="mt-8"
@@ -77,6 +80,75 @@ function AccountPage() {
       >
         Sign Out
       </Button>
+    </div>
+  );
+}
+
+function ChangePasswordCard() {
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (newPassword !== confirmPassword) {
+      toast.error("New passwords don't match.");
+      return;
+    }
+    setSaving(true);
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword,
+      current_password: currentPassword,
+    });
+    setSaving(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("Password updated.");
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+  }
+
+  return (
+    <div className="mt-6 border border-border bg-card p-6">
+      <p className="section-label text-xs text-muted-foreground">Security</p>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Change the password you use to sign in.
+      </p>
+      <form onSubmit={submit} className="mt-4 space-y-3">
+        <Input
+          type="password"
+          value={currentPassword}
+          onChange={(e) => setCurrentPassword(e.target.value)}
+          placeholder="Current password"
+          className="bg-secondary"
+          required
+        />
+        <Input
+          type="password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          placeholder="New password"
+          className="bg-secondary"
+          minLength={6}
+          required
+        />
+        <Input
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          placeholder="Confirm new password"
+          className="bg-secondary"
+          minLength={6}
+          required
+        />
+        <Button type="submit" disabled={saving}>
+          {saving ? "Updating..." : "Update Password"}
+        </Button>
+      </form>
     </div>
   );
 }
