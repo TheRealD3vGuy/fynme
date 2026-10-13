@@ -69,6 +69,7 @@ function AccountPage() {
           Your order history will appear here once you place your first order.
         </p>
       </div>
+      <ChangePasswordCard />
       <Button
         variant="outline"
         className="mt-8"
