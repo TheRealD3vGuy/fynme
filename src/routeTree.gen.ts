@@ -17,6 +17,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DiscoverRouteImport } from './routes/discover'
+import { Route as TestimonyRouteImport } from './routes/testimony'
 import { Route as CollectionsSlugRouteImport } from './routes/collections.$slug'
 import { Route as PagesSlugRouteImport } from './routes/pages.$slug'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
@@ -61,6 +62,11 @@ const DiscoverRoute = DiscoverRouteImport.update({
   path: '/discover',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TestimonyRoute = TestimonyRouteImport.update({
+  id: '/testimony',
+  path: '/testimony',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CollectionsSlugRoute = CollectionsSlugRouteImport.update({
   id: '/collections/$slug',
   path: '/collections/$slug',
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/discover': typeof DiscoverRoute
+  '/testimony': typeof TestimonyRoute
   '/collections/$slug': typeof CollectionsSlugRoute
   '/pages/$slug': typeof PagesSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/discover': typeof DiscoverRoute
+  '/testimony': typeof TestimonyRoute
   '/collections/$slug': typeof CollectionsSlugRoute
   '/pages/$slug': typeof PagesSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
@@ -113,6 +121,7 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/discover': typeof DiscoverRoute
+  '/testimony': typeof TestimonyRoute
   '/collections/$slug': typeof CollectionsSlugRoute
   '/pages/$slug': typeof PagesSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
@@ -128,6 +137,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contact'
     | '/discover'
+    | '/testimony'
     | '/collections/$slug'
     | '/pages/$slug'
     | '/products/$slug'
@@ -141,6 +151,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contact'
     | '/discover'
+    | '/testimony'
     | '/collections/$slug'
     | '/pages/$slug'
     | '/products/$slug'
@@ -154,6 +165,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contact'
     | '/discover'
+    | '/testimony'
     | '/collections/$slug'
     | '/pages/$slug'
     | '/products/$slug'
@@ -168,6 +180,7 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   ContactRoute: typeof ContactRoute
   DiscoverRoute: typeof DiscoverRoute
+  TestimonyRoute: typeof TestimonyRoute
   CollectionsSlugRoute: typeof CollectionsSlugRoute
   PagesSlugRoute: typeof PagesSlugRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
@@ -231,6 +244,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiscoverRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/testimony': {
+      id: '/testimony'
+      path: '/testimony'
+      fullPath: '/testimony'
+      preLoaderRoute: typeof TestimonyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/collections/$slug': {
       id: '/collections/$slug'
       path: '/collections/$slug'
@@ -264,6 +284,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   ContactRoute: ContactRoute,
   DiscoverRoute: DiscoverRoute,
+  TestimonyRoute: TestimonyRoute,
   CollectionsSlugRoute: CollectionsSlugRoute,
   PagesSlugRoute: PagesSlugRoute,
   ProductsSlugRoute: ProductsSlugRoute,
