@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Public read media files" ON storage.objects;

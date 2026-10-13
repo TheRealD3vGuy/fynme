@@ -15,6 +15,13 @@
       "when": 1791825335547,
       "tag": "0001_fyn_seed_products",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791860423696,
+      "tag": "0002_drop_public_media_read_policy",
+      "breakpoints": true
     }
   ]
 }
