@@ -28,7 +28,10 @@ function AdminPage() {
     supabase.auth.getUser().then(async ({ data }) => {
       setUser(data.user);
       if (data.user) {
-        const { data: staff } = await supabase.rpc("is_staff");
+        const { data: staff, error } = await supabase.rpc("is_staff", {
+          _user_id: data.user.id,
+        });
+        if (error) console.error("is_staff check failed:", error.message);
         setIsStaff(Boolean(staff));
       } else {
         setIsStaff(null);
@@ -48,7 +51,10 @@ function AdminPage() {
       toast.error(error?.message ?? "Sign-in failed.");
       return;
     }
-    const { data: staff } = await supabase.rpc("is_staff");
+    const { data: staff, error: staffError } = await supabase.rpc("is_staff", {
+      _user_id: data.user.id,
+    });
+    if (staffError) console.error("is_staff check failed:", staffError.message);
     setIsStaff(Boolean(staff));
     setUser(data.user);
     setLoading(false);
