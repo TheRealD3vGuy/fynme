@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "../lib/cart";
+import { useLiveStoreUpdates } from "../lib/live";
 import { Header } from "../components/store/Header";
 import { Footer } from "../components/store/Footer";
 import { CartDrawer } from "../components/store/CartDrawer";
