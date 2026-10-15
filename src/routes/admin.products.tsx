@@ -75,7 +75,7 @@ function ProductsAdmin() {
 
   async function save() {
     if (!form) return;
-    if (!form.name.trim()) return toast.error("Name is required.");
+    if (!form.name.trim()) { toast.error("Name is required."); return; }
     setSaving(true);
     const row = {
       name: form.name.trim(),
@@ -134,7 +134,7 @@ function ProductsAdmin() {
     await supabase.from("product_images").delete().eq("product_id", p.id);
     await supabase.from("product_variants").delete().eq("product_id", p.id);
     const { error } = await supabase.from("products").delete().eq("id", p.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await logActivity("delete", "product", p.id, `Deleted product "${p.name}"`);
     toast.success("Product deleted.");
     qc.invalidateQueries();

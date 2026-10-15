@@ -22,7 +22,7 @@ function NavigationAdmin() {
 
   async function update(id: string, patch: { label?: string; href?: string; position?: number; is_visible?: boolean }) {
     const { error } = await supabase.from("navigation_items").update(patch).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await logActivity("update", "navigation", id, "Updated a menu link");
     qc.invalidateQueries();
   }
@@ -30,7 +30,7 @@ function NavigationAdmin() {
   async function add(location: string) {
     const pos = (data ?? []).filter((n) => n.location === location).length;
     const { error } = await supabase.from("navigation_items").insert({ location, label: "New link", href: "/", position: pos });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     qc.invalidateQueries();
   }
 

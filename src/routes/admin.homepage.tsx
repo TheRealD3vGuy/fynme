@@ -56,7 +56,7 @@ function HomepageAdmin() {
   async function save() {
     for (const key of ["hero", "homepage", "store"]) {
       const { error } = await supabase.from("site_settings").upsert({ key, value: s[key] ?? {}, updated_at: new Date().toISOString() });
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
     }
     await logActivity("update", "settings", null, "Updated homepage & store settings");
     toast.success("Published to the live site.");
