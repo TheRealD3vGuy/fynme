@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "../lib/cart";
+import { useLiveStoreUpdates } from "../lib/live";
 import { Header } from "../components/store/Header";
 import { Footer } from "../components/store/Footer";
 import { CartDrawer } from "../components/store/CartDrawer";
@@ -135,6 +136,11 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function LiveUpdates() {
+  useLiveStoreUpdates();
+  return null;
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
@@ -150,6 +156,7 @@ function RootComponent() {
         </div>
         <CartDrawer />
         <Toaster />
+        <LiveUpdates />
       </CartProvider>
     </QueryClientProvider>
   );
