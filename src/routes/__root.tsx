@@ -136,6 +136,11 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function LiveUpdates() {
+  useLiveStoreUpdates();
+  return null;
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
@@ -151,6 +156,7 @@ function RootComponent() {
         </div>
         <CartDrawer />
         <Toaster />
+        <LiveUpdates />
       </CartProvider>
     </QueryClientProvider>
   );
