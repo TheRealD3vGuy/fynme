@@ -24,7 +24,7 @@ function CollectionsAdmin() {
   });
 
   async function save() {
-    if (!editing?.name.trim()) return toast.error("Name is required.");
+    if (!editing?.name.trim()) { toast.error("Name is required."); return; }
     const row = {
       name: editing.name.trim(), slug: editing.slug || slugify(editing.name),
       description: editing.description || null, cover_image_url: editing.cover_image_url || null,
@@ -33,7 +33,7 @@ function CollectionsAdmin() {
     const { error } = editing.id
       ? await supabase.from("collections").update(row).eq("id", editing.id)
       : await supabase.from("collections").insert(row);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await logActivity(editing.id ? "update" : "create", "collection", editing.id ?? null, `Saved series "${row.name}"`);
     toast.success("Series saved.");
     setEditing(null);
@@ -44,7 +44,7 @@ function CollectionsAdmin() {
     if (!confirm(`Delete series "${name}"? Products in it will stay but lose their series.`)) return;
     await supabase.from("products").update({ collection_id: null }).eq("collection_id", id);
     const { error } = await supabase.from("collections").delete().eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await logActivity("delete", "collection", id, `Deleted series "${name}"`);
     qc.invalidateQueries();
   }

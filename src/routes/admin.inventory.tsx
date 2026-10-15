@@ -30,7 +30,7 @@ function InventoryAdmin() {
     const next = parseInt(edits[id] ?? "", 10);
     if (Number.isNaN(next) || next === current) return;
     const { error } = await supabase.from("product_variants").update({ stock: next }).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await supabase.from("inventory_adjustments").insert({ variant_id: id, delta: next - current, reason: "manual" });
     await logActivity("adjust", "inventory", id, `Stock for ${label}: ${current} → ${next}`);
     setEdits((e) => { const c = { ...e }; delete c[id]; return c; });

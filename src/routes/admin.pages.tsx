@@ -29,7 +29,7 @@ function PagesAdmin() {
 
   function open(p: Row | null) {
     setRemoved([]);
-    if (!p) return setForm({ title: "", slug: "", status: "draft", seo_title: "", seo_description: "", sections: [{ heading: "", body: "", is_visible: true }] });
+    if (!p) { setForm({ title: "", slug: "", status: "draft", seo_title: "", seo_description: "", sections: [{ heading: "", body: "", is_visible: true }] }); return; }
     setForm({
       id: p.id, title: p.title, slug: p.slug, status: p.status, seo_title: p.seo_title ?? "", seo_description: p.seo_description ?? "",
       sections: [...p.page_sections].sort((a, b) => a.position - b.position).map((s) => {
@@ -40,7 +40,7 @@ function PagesAdmin() {
   }
 
   async function save(status: string) {
-    if (!form?.title.trim()) return toast.error("Title is required.");
+    if (!form?.title.trim()) { toast.error("Title is required."); return; }
     const row = {
       title: form.title.trim(), slug: form.slug || slugify(form.title), status,
       seo_title: form.seo_title || null, seo_description: form.seo_description || null, updated_at: new Date().toISOString(),
@@ -48,10 +48,10 @@ function PagesAdmin() {
     let id = form.id;
     if (id) {
       const { error } = await supabase.from("pages").update(row).eq("id", id);
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
     } else {
       const { data: ins, error } = await supabase.from("pages").insert(row).select("id").single();
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       id = ins.id;
     }
     if (removed.length) await supabase.from("page_sections").delete().in("id", removed);
@@ -70,7 +70,7 @@ function PagesAdmin() {
     if (!confirm(`Delete page "${p.title}"?`)) return;
     await supabase.from("page_sections").delete().eq("page_id", p.id);
     const { error } = await supabase.from("pages").delete().eq("id", p.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await logActivity("delete", "page", p.id, `Deleted page "${p.title}"`);
     qc.invalidateQueries();
   }
