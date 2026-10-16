@@ -5,14 +5,18 @@ import { useQuery } from "@tanstack/react-query";
 import { useCart } from "@/lib/cart";
 import { fetchNav } from "@/lib/store";
 import { SearchOverlay } from "./SearchOverlay";
+import logoAsset from "@/assets/fyn-logo.png.asset.json";
 
 function Logo() {
   return (
     <Link to="/" aria-label="Find Your North — home" className="block">
-      <div className="flex h-9 w-9 flex-col items-center justify-center border-2 border-foreground font-display text-sm font-bold leading-none tracking-tight">
-        <span>FY</span>
-        <span>NA</span>
-      </div>
+      <img
+        src={logoAsset.url}
+        alt="Find Your North logo"
+        className="h-10 w-10"
+        width={40}
+        height={40}
+      />
     </Link>
   );
 }
