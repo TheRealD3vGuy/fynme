@@ -124,3 +124,16 @@
   letter-spacing: 0.08em;
   font-weight: 600;
 }
+
+/* Printable receipts / packing slips: paper is always white with black ink */
+.receipt-paper {
+  background: oklch(1 0 0);
+  color: oklch(0 0 0);
+}
+@media print {
+  @page { margin: 4mm; }
+  body * { visibility: hidden; }
+  #receipt-print, #receipt-print * { visibility: visible; }
+  #receipt-print { position: absolute; left: 0; top: 0; }
+  body { background: oklch(1 0 0); }
+}

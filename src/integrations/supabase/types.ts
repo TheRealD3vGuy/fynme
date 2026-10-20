@@ -713,6 +713,81 @@ export type Database = {
         }
         Relationships: []
       }
+      receipts: {
+        Row: {
+          amount_tendered_cents: number | null
+          change_cents: number | null
+          created_at: string
+          created_by: string | null
+          customer_email: string | null
+          customer_name: string | null
+          customer_phone: string | null
+          discount_cents: number
+          discount_label: string | null
+          id: string
+          internal_notes: string | null
+          items: Json
+          notes: string | null
+          order_id: string | null
+          payment_method: string
+          receipt_number: string
+          shipping_cents: number
+          subtotal_cents: number
+          tax_cents: number
+          tax_rate: number
+          tip_cents: number
+          total_cents: number
+        }
+        Insert: {
+          amount_tendered_cents?: number | null
+          change_cents?: number | null
+          created_at?: string
+          created_by?: string | null
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          discount_cents?: number
+          discount_label?: string | null
+          id?: string
+          internal_notes?: string | null
+          items?: Json
+          notes?: string | null
+          order_id?: string | null
+          payment_method?: string
+          receipt_number?: string
+          shipping_cents?: number
+          subtotal_cents?: number
+          tax_cents?: number
+          tax_rate?: number
+          tip_cents?: number
+          total_cents?: number
+        }
+        Update: {
+          amount_tendered_cents?: number | null
+          change_cents?: number | null
+          created_at?: string
+          created_by?: string | null
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          discount_cents?: number
+          discount_label?: string | null
+          id?: string
+          internal_notes?: string | null
+          items?: Json
+          notes?: string | null
+          order_id?: string | null
+          payment_method?: string
+          receipt_number?: string
+          shipping_cents?: number
+          subtotal_cents?: number
+          tax_cents?: number
+          tax_rate?: number
+          tip_cents?: number
+          total_cents?: number
+        }
+        Relationships: []
+      }
       site_settings: {
         Row: {
           key: string
