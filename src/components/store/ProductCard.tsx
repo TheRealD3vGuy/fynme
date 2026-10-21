@@ -125,7 +125,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
               <button
                 onClick={handleQuickAdd}
                 aria-label={`Quick add ${product.name} to cart`}
-                className="absolute bottom-2 right-2 flex items-center gap-1 bg-background/90 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-foreground opacity-0 transition-opacity hover:bg-accent hover:text-accent-foreground focus:opacity-100 group-hover:opacity-100"
+                className="absolute bottom-2 right-2 flex items-center gap-1 bg-background/90 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-foreground transition-colors hover:bg-accent hover:text-accent-foreground md:opacity-0 md:transition-opacity md:focus:opacity-100 md:group-hover:opacity-100"
               >
                 <ShoppingBag className="h-3.5 w-3.5" />
                 Quick Add
