@@ -1,14 +1,30 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchProducts } from "@/lib/store";
 import { useCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/format";
+import { readRecent, recordRecent, type RecentItem } from "@/lib/recent";
 import { ProductCard } from "@/components/store/ProductCard";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+const SIZE_GUIDE_ROWS: Array<[string, string, string]> = [
+  ["S", '36–38"', '27"'],
+  ["M", '39–41"', '28"'],
+  ["L", '42–44"', '29"'],
+  ["XL", '45–47"', '30"'],
+  ["XXL", '48–50"', '31"'],
+];
 
 export const Route = createFileRoute("/products/$slug")({
   loader: async ({ params }) => {
