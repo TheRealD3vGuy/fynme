@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/format";
+import { FREE_SHIPPING_THRESHOLD_CENTS } from "@/lib/shipping";
 
 export function CartDrawer() {
   const { items, isOpen, setOpen, updateQuantity, removeItem, subtotalCents } =
@@ -95,6 +96,7 @@ export function CartDrawer() {
               ))}
             </div>
             <div className="border-t border-border pt-4">
+              <FreeShippingProgress subtotalCents={subtotalCents} />
               <div className="mb-4 flex justify-between">
                 <span className="text-muted-foreground">Subtotal</span>
                 <span className="font-display text-xl font-semibold">
