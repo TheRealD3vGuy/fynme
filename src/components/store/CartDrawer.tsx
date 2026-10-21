@@ -11,6 +11,39 @@ import { useCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/format";
 import { FREE_SHIPPING_THRESHOLD_CENTS } from "@/lib/shipping";
 
+function FreeShippingProgress({ subtotalCents }: { subtotalCents: number }) {
+  const remaining = FREE_SHIPPING_THRESHOLD_CENTS - subtotalCents;
+  const pct = Math.min(
+    100,
+    Math.round((subtotalCents / FREE_SHIPPING_THRESHOLD_CENTS) * 100),
+  );
+  return (
+    <div className="mb-4">
+      <p className="mb-1.5 text-xs uppercase tracking-wide text-muted-foreground">
+        {remaining > 0 ? (
+          <>
+            You're{" "}
+            <span className="font-semibold text-foreground">
+              {formatPrice(remaining)}
+            </span>{" "}
+            away from free shipping
+          </>
+        ) : (
+          <span className="font-semibold text-accent">
+            You've unlocked free shipping!
+          </span>
+        )}
+      </p>
+      <div className="h-1.5 w-full bg-secondary">
+        <div
+          className="h-full bg-accent transition-all"
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
 export function CartDrawer() {
   const { items, isOpen, setOpen, updateQuantity, removeItem, subtotalCents } =
     useCart();
