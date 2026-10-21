@@ -80,6 +80,18 @@ function ProductPage() {
     variants[0]?.id ?? null,
   );
   const [quantity, setQuantity] = useState(1);
+  const [recent, setRecent] = useState<RecentItem[]>([]);
+
+  useEffect(() => {
+    recordRecent({
+      slug: product.slug,
+      name: product.name,
+      priceCents: product.price_cents,
+      imageUrl: images[0]?.url ?? null,
+    });
+    setRecent(readRecent().filter((i) => i.slug !== product.slug).slice(0, 4));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product.slug]);
 
   const variant = variants.find((v) => v.id === variantId) ?? null;
   const priceCents = variant?.price_cents ?? product.price_cents;
