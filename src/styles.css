@@ -137,3 +137,61 @@
   #receipt-print { position: absolute; left: 0; top: 0; }
   body { background: oklch(1 0 0); }
 }
+
+/* ============ Motion ============ */
+/* Scroll-reveal: content fades and rises into place as you scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hero entrance: headline and subtitle rise in with a gentle stagger */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(36px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes hero-image-settle {
+  from {
+    transform: scale(1.06);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@utility animate-hero-rise {
+  animation: hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@utility animate-hero-image {
+  animation: hero-image-settle 2.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Smooth default easing for interactive elements */
+@utility ease-brand {
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .animate-hero-rise,
+  .animate-hero-image {
+    animation: none;
+  }
+}
