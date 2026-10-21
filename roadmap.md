@@ -1,28 +1,15 @@
-# Find Your North — Build Roadmap
+# Find Your North — Roadmap
 
-## Phase 1 — Foundation (this turn)
-- [ ] Database schema: products, variants, images, collections, categories, tags, orders, order_items, discounts, addresses, contact_submissions, newsletter, pages, page_sections, site_settings, navigation, media, activity_log, profiles, user_roles, staff_invitations (+ GRANTs, RLS, seed data)
-- [ ] Design system in src/styles.css (FYN dark palette, fonts)
-- [ ] Storage bucket for media/product images
-- [ ] Storefront shell: nav (search, About, Discover, logo, Contact, Account, cart) + footer from DB
-- [ ] Homepage: hero, featured, wholesale banner, shop by series, stickers, newsletter
-- [ ] Discover page with search/filters/sort + admin4287 shortcut (navigation only)
-- [ ] Product detail pages + collection pages
-- [ ] Cart (drawer, persists) + checkout placeholder w/ setup checklist
-- [ ] Auth (email/password + Google) + customer account area
-- [ ] About + Contact pages (contact form stores submissions)
+## Done
+- Storefront: homepage, Discover (search/filters/sort), product & collection pages, cart + drawer, checkout placeholder, auth (email + Google), account w/ change password, about, contact, testimony
+- Staff panel: overview, products, inventory, collections, homepage, pages, menus/footer, orders, customers, inbox, discounts, receipts
+- Realtime live updates for visitors; FYN logo + favicon
+- QoL: free-shipping bar, size guide dialog, low-stock badges, quick add, recently viewed, forgot-password + reset page
 
-## Phase 2 — Staff panel core
-- [ ] Admin layout + role gate + sidebar (22 sections)
-- [ ] Overview dashboard, Products CRUD, Collections, Inventory
-- [ ] Orders, Customers, Contact Inbox, Discounts
-- [ ] Activity log
-
-## Phase 3 — CMS & publishing
-- [ ] Website Pages editor, Navigation & Footer editor, Media Library
-- [ ] Design System settings + presets, draft/publish workflow + revision history
-- [ ] Staff & Permissions + invitations, SEO, Settings/Integrations, Analytics
-
-## Phase 4 — Payments & polish
-- [ ] Stripe checkout + webhooks (when credentials available)
-- [ ] Responsive/accessibility pass, SEO metadata, sitemap
+## Open
+- [ ] Browser-verify: receipt printer, quick add, size guide, free-shipping bar, forgot-password email end-to-end
+- [ ] Photo uploads for staff (currently paste-a-URL; media bucket private, needs scoped policy)
+- [ ] Stripe checkout + webhooks (needs Pro plan / keys; verify server-side only)
+- [ ] Free-shipping threshold is placeholder $75 — confirm real amount with owner
+- [ ] Testimony page is a general draft — awaiting owner's real story
+- [ ] Custom domain findyournorth.store (needs paid plan; GitHub connect is user's action in settings)

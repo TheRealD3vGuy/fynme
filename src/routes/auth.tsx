@@ -66,6 +66,23 @@ function AuthPage() {
     }
   }
 
+  async function forgotPassword() {
+    if (!email.trim()) {
+      toast.error("Enter your email address first, then click Forgot password.");
+      return;
+    }
+    setLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setLoading(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("Password reset email sent. Check your inbox.");
+  }
+
   async function signInWithGoogle() {
     const { error } = await lovable.auth.signInWithOAuth("google", {
       redirect_uri: window.location.origin,
@@ -132,6 +149,15 @@ function AuthPage() {
               ? "Sign In"
               : "Create Account"}
         </Button>
+        {mode === "signin" && (
+          <button
+            type="button"
+            onClick={forgotPassword}
+            className="w-full text-center text-sm text-muted-foreground hover:text-accent hover:underline"
+          >
+            Forgot password?
+          </button>
+        )}
       </form>
 
       <button

@@ -1,14 +1,30 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchProducts } from "@/lib/store";
 import { useCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/format";
+import { readRecent, recordRecent, type RecentItem } from "@/lib/recent";
 import { ProductCard } from "@/components/store/ProductCard";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+const SIZE_GUIDE_ROWS: Array<[string, string, string]> = [
+  ["S", '36–38"', '27"'],
+  ["M", '39–41"', '28"'],
+  ["L", '42–44"', '29"'],
+  ["XL", '45–47"', '30"'],
+  ["XXL", '48–50"', '31"'],
+];
 
 export const Route = createFileRoute("/products/$slug")({
   loader: async ({ params }) => {
@@ -64,6 +80,18 @@ function ProductPage() {
     variants[0]?.id ?? null,
   );
   const [quantity, setQuantity] = useState(1);
+  const [recent, setRecent] = useState<RecentItem[]>([]);
+
+  useEffect(() => {
+    recordRecent({
+      slug: product.slug,
+      name: product.name,
+      priceCents: product.price_cents,
+      imageUrl: images[0]?.url ?? null,
+    });
+    setRecent(readRecent().filter((i) => i.slug !== product.slug).slice(0, 4));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product.slug]);
 
   const variant = variants.find((v) => v.id === variantId) ?? null;
   const priceCents = variant?.price_cents ?? product.price_cents;
@@ -178,9 +206,49 @@ function ProductPage() {
 
           {variants.length > 1 && (
             <div className="mt-6">
-              <p className="section-label text-sm text-muted-foreground">
-                Size
-              </p>
+              <div className="flex items-center justify-between">
+                <p className="section-label text-sm text-muted-foreground">
+                  Size
+                </p>
+                {!product.tags?.includes("sticker") && (
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="text-xs text-accent underline underline-offset-2 hover:text-foreground">
+                        Size Guide
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="bg-background">
+                      <DialogHeader>
+                        <DialogTitle className="font-display text-2xl uppercase tracking-wide">
+                          Size Guide
+                        </DialogTitle>
+                      </DialogHeader>
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b border-border text-left text-muted-foreground">
+                            <th className="py-2 pr-4 font-medium">Size</th>
+                            <th className="py-2 pr-4 font-medium">Chest</th>
+                            <th className="py-2 font-medium">Length</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {SIZE_GUIDE_ROWS.map(([size, chest, length]) => (
+                            <tr key={size} className="border-b border-border/50">
+                              <td className="py-2 pr-4 font-semibold">{size}</td>
+                              <td className="py-2 pr-4">{chest}</td>
+                              <td className="py-2">{length}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                      <p className="text-xs text-muted-foreground">
+                        Measurements are of the garment, laid flat. Between
+                        sizes? We recommend sizing up.
+                      </p>
+                    </DialogContent>
+                  </Dialog>
+                )}
+              </div>
               <div className="mt-2 flex flex-wrap gap-2">
                 {variants.map((v) => (
                   <button
@@ -198,6 +266,12 @@ function ProductPage() {
                 ))}
               </div>
             </div>
+          )}
+
+          {variant != null && variant.stock > 0 && variant.stock <= 5 && (
+            <p className="mt-3 text-sm font-semibold uppercase tracking-wide text-accent">
+              Only {variant.stock} left in {variant.name}
+            </p>
           )}
 
           <div className="mt-6 flex items-center gap-4">
@@ -243,6 +317,43 @@ function ProductPage() {
           </div>
         </div>
       </div>
+
+      {recent.length > 0 && (
+        <section className="mt-16">
+          <h2 className="section-label mb-6 border-b border-border pb-3 text-2xl">
+            Recently Viewed
+          </h2>
+          <div className="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-4">
+            {recent.map((item) => (
+              <Link
+                key={item.slug}
+                to="/products/$slug"
+                params={{ slug: item.slug }}
+                className="group block"
+              >
+                <div className="aspect-square overflow-hidden bg-card">
+                  {item.imageUrl ? (
+                    <img
+                      src={item.imageUrl}
+                      alt={item.name}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="flex h-full items-center justify-center text-muted-foreground">
+                      No image
+                    </div>
+                  )}
+                </div>
+                <h3 className="mt-3 font-display text-xl font-semibold uppercase tracking-wide">
+                  {item.name}
+                </h3>
+                <p className="mt-0.5 text-sm">{formatPrice(item.priceCents)}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {related && related.length > 0 && (
         <section className="mt-16">

@@ -17,6 +17,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DiscoverRouteImport } from './routes/discover'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as TestimonyRouteImport } from './routes/testimony'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminCollectionsRouteImport } from './routes/admin.collections'
@@ -71,6 +72,11 @@ const ContactRoute = ContactRouteImport.update({
 const DiscoverRoute = DiscoverRouteImport.update({
   id: '/discover',
   path: '/discover',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TestimonyRoute = TestimonyRouteImport.update({
@@ -158,6 +164,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/discover': typeof DiscoverRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/testimony': typeof TestimonyRoute
   '/admin/collections': typeof AdminCollectionsRoute
   '/admin/discounts': typeof AdminDiscountsRoute
@@ -182,6 +189,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/discover': typeof DiscoverRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/testimony': typeof TestimonyRoute
   '/admin/collections': typeof AdminCollectionsRoute
   '/admin/discounts': typeof AdminDiscountsRoute
@@ -208,6 +216,7 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/discover': typeof DiscoverRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/testimony': typeof TestimonyRoute
   '/admin/collections': typeof AdminCollectionsRoute
   '/admin/discounts': typeof AdminDiscountsRoute
@@ -235,6 +244,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contact'
     | '/discover'
+    | '/reset-password'
     | '/testimony'
     | '/admin/collections'
     | '/admin/discounts'
@@ -259,6 +269,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contact'
     | '/discover'
+    | '/reset-password'
     | '/testimony'
     | '/admin/collections'
     | '/admin/discounts'
@@ -284,6 +295,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contact'
     | '/discover'
+    | '/reset-password'
     | '/testimony'
     | '/admin/collections'
     | '/admin/discounts'
@@ -310,6 +322,7 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   ContactRoute: typeof ContactRoute
   DiscoverRoute: typeof DiscoverRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   TestimonyRoute: typeof TestimonyRoute
   CollectionsSlugRoute: typeof CollectionsSlugRoute
   PagesSlugRoute: typeof PagesSlugRoute
@@ -372,6 +385,13 @@ declare module '@tanstack/react-router' {
       path: '/discover'
       fullPath: '/discover'
       preLoaderRoute: typeof DiscoverRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/testimony': {
@@ -521,6 +541,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   ContactRoute: ContactRoute,
   DiscoverRoute: DiscoverRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   TestimonyRoute: TestimonyRoute,
   CollectionsSlugRoute: CollectionsSlugRoute,
   PagesSlugRoute: PagesSlugRoute,
