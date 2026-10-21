@@ -206,9 +206,49 @@ function ProductPage() {
 
           {variants.length > 1 && (
             <div className="mt-6">
-              <p className="section-label text-sm text-muted-foreground">
-                Size
-              </p>
+              <div className="flex items-center justify-between">
+                <p className="section-label text-sm text-muted-foreground">
+                  Size
+                </p>
+                {!product.tags?.includes("sticker") && (
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="text-xs text-accent underline underline-offset-2 hover:text-foreground">
+                        Size Guide
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="bg-background">
+                      <DialogHeader>
+                        <DialogTitle className="font-display text-2xl uppercase tracking-wide">
+                          Size Guide
+                        </DialogTitle>
+                      </DialogHeader>
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b border-border text-left text-muted-foreground">
+                            <th className="py-2 pr-4 font-medium">Size</th>
+                            <th className="py-2 pr-4 font-medium">Chest</th>
+                            <th className="py-2 font-medium">Length</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {SIZE_GUIDE_ROWS.map(([size, chest, length]) => (
+                            <tr key={size} className="border-b border-border/50">
+                              <td className="py-2 pr-4 font-semibold">{size}</td>
+                              <td className="py-2 pr-4">{chest}</td>
+                              <td className="py-2">{length}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                      <p className="text-xs text-muted-foreground">
+                        Measurements are of the garment, laid flat. Between
+                        sizes? We recommend sizing up.
+                      </p>
+                    </DialogContent>
+                  </Dialog>
+                )}
+              </div>
               <div className="mt-2 flex flex-wrap gap-2">
                 {variants.map((v) => (
                   <button
