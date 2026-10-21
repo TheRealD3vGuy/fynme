@@ -64,8 +64,9 @@ export function ProductCard({ product }: { product: ProductCardData }) {
   async function handleQuickAdd() {
     const list = await loadVariants();
     const available = list.filter((v) => v.stock > 0);
-    if (available.length === 1) {
-      addVariant(available[0]);
+    const only = available.length === 1 ? available[0] : undefined;
+    if (only) {
+      addVariant(only);
       return;
     }
     if (available.length === 0) {
