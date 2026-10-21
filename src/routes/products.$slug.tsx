@@ -268,6 +268,12 @@ function ProductPage() {
             </div>
           )}
 
+          {variant != null && variant.stock > 0 && variant.stock <= 5 && (
+            <p className="mt-3 text-sm font-semibold uppercase tracking-wide text-accent">
+              Only {variant.stock} left in {variant.name}
+            </p>
+          )}
+
           <div className="mt-6 flex items-center gap-4">
             <div className="flex items-center border border-border">
               <button
@@ -311,6 +317,43 @@ function ProductPage() {
           </div>
         </div>
       </div>
+
+      {recent.length > 0 && (
+        <section className="mt-16">
+          <h2 className="section-label mb-6 border-b border-border pb-3 text-2xl">
+            Recently Viewed
+          </h2>
+          <div className="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-4">
+            {recent.map((item) => (
+              <Link
+                key={item.slug}
+                to="/products/$slug"
+                params={{ slug: item.slug }}
+                className="group block"
+              >
+                <div className="aspect-square overflow-hidden bg-card">
+                  {item.imageUrl ? (
+                    <img
+                      src={item.imageUrl}
+                      alt={item.name}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="flex h-full items-center justify-center text-muted-foreground">
+                      No image
+                    </div>
+                  )}
+                </div>
+                <h3 className="mt-3 font-display text-xl font-semibold uppercase tracking-wide">
+                  {item.name}
+                </h3>
+                <p className="mt-0.5 text-sm">{formatPrice(item.priceCents)}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {related && related.length > 0 && (
         <section className="mt-16">
