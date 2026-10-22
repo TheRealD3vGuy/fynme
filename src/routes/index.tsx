@@ -11,6 +11,7 @@ import {
 import { ProductCard } from "@/components/store/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Reveal } from "@/lib/reveal";
 
 interface HeroSettings {
   heading: string;
@@ -92,7 +93,7 @@ function HomePage() {
             <img
               src={hero.image_url}
               alt="Foggy Pacific Northwest forest"
-              className="absolute inset-0 h-full w-full object-cover"
+              className="animate-hero-image absolute inset-0 h-full w-full object-cover"
               width={1920}
               height={1088}
             />
@@ -102,16 +103,16 @@ function HomePage() {
             style={{ opacity: hero?.overlay ?? 0.45 }}
           />
           <div className="absolute inset-x-0 bottom-0 mx-auto max-w-7xl px-4 pb-10 text-right">
-            <h1 className="text-outline font-display text-6xl font-bold uppercase leading-none tracking-tight md:text-8xl lg:text-9xl">
+            <h1 className="animate-hero-rise text-outline font-display text-6xl font-bold uppercase leading-none tracking-tight md:text-8xl lg:text-9xl">
               {hero?.heading ?? "FIND YOUR NORTH"}
             </h1>
             {hero?.subtitle && (
-              <p className="mt-3 text-sm text-foreground/90 md:text-base">
+              <p className="animate-hero-rise mt-3 text-sm text-foreground/90 md:text-base" style={{ animationDelay: "200ms" }}>
                 {hero.subtitle}
               </p>
             )}
             {hero?.cta_text && (
-              <Button asChild size="lg" className="mt-5">
+              <Button asChild size="lg" className="animate-hero-rise mt-5" style={{ animationDelay: "350ms" }}>
                 <Link to={hero.cta_href ?? "/discover"}>{hero.cta_text}</Link>
               </Button>
             )}
@@ -131,8 +132,10 @@ function HomePage() {
             </span>
           </div>
           <div className="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 md:gap-x-6">
-            {featured.slice(0, 6).map((p) => (
-              <ProductCard key={p.id} product={p} />
+            {featured.slice(0, 6).map((p, i) => (
+              <Reveal key={p.id} delay={(i % 3) * 90}>
+                <ProductCard product={p} />
+              </Reveal>
             ))}
           </div>
         </section>
@@ -141,7 +144,7 @@ function HomePage() {
       {/* Wholesale banner */}
       {settings.wholesale_enabled && (
         <section className="mx-auto max-w-7xl px-4 py-8">
-          <div className="flex flex-col items-start justify-between gap-6 border border-border bg-secondary p-8 md:flex-row md:items-center md:p-12">
+          <Reveal><div className="flex flex-col items-start justify-between gap-6 border border-border bg-secondary p-8 md:flex-row md:items-center md:p-12">
             <div>
               <p className="section-label text-sm text-muted-foreground">
                 Business Partnership
@@ -160,7 +163,7 @@ function HomePage() {
                 Get in Touch
               </Link>
             </Button>
-          </div>
+          </div></Reveal>
         </section>
       )}
 
@@ -175,11 +178,11 @@ function HomePage() {
           </div>
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
             {collections.map((c, i) => (
+              <Reveal key={c.id} delay={(i % 4) * 80}>
               <Link
-                key={c.id}
                 to="/collections/$slug"
                 params={{ slug: c.slug }}
-                className="group border border-border bg-card p-5 transition-colors hover:border-accent"
+                className="ease-brand group block h-full border border-border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-accent"
               >
                 <p className="text-xs uppercase tracking-wider text-muted-foreground">
                   Series #{i + 1}
@@ -191,6 +194,7 @@ function HomePage() {
                   {c.product_count} products
                 </p>
               </Link>
+              </Reveal>
             ))}
           </div>
         </section>
@@ -215,8 +219,10 @@ function HomePage() {
             </Link>
           </div>
           <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 md:grid-cols-5">
-            {stickers.slice(0, 5).map((p) => (
-              <ProductCard key={p.id} product={p} />
+            {stickers.slice(0, 5).map((p, i) => (
+              <Reveal key={p.id} delay={i * 70}>
+                <ProductCard product={p} />
+              </Reveal>
             ))}
           </div>
         </section>
