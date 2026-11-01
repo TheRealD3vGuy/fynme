@@ -28,11 +28,13 @@ import { Route as AdminInventoryRouteImport } from './routes/admin.inventory'
 import { Route as AdminNavigationRouteImport } from './routes/admin.navigation'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminPagesRouteImport } from './routes/admin.pages'
+import { Route as AdminPrintifyRouteImport } from './routes/admin.printify'
 import { Route as AdminProductsRouteImport } from './routes/admin.products'
 import { Route as AdminReceiptsRouteImport } from './routes/admin.receipts'
 import { Route as CollectionsSlugRouteImport } from './routes/collections.$slug'
 import { Route as PagesSlugRouteImport } from './routes/pages.$slug'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
+import { Route as ApiPublicPrintifyWebhookRouteImport } from './routes/api/public/printify-webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -129,6 +131,11 @@ const AdminPagesRoute = AdminPagesRouteImport.update({
   path: '/pages',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminPrintifyRoute = AdminPrintifyRouteImport.update({
+  id: '/printify',
+  path: '/printify',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminProductsRoute = AdminProductsRouteImport.update({
   id: '/products',
   path: '/products',
@@ -154,6 +161,12 @@ const ProductsSlugRoute = ProductsSlugRouteImport.update({
   path: '/products/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicPrintifyWebhookRoute =
+  ApiPublicPrintifyWebhookRouteImport.update({
+    id: '/api/public/printify-webhook',
+    path: '/api/public/printify-webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -174,12 +187,14 @@ export interface FileRoutesByFullPath {
   '/admin/navigation': typeof AdminNavigationRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/pages': typeof AdminPagesRoute
+  '/admin/printify': typeof AdminPrintifyRoute
   '/admin/products': typeof AdminProductsRoute
   '/admin/receipts': typeof AdminReceiptsRoute
   '/collections/$slug': typeof CollectionsSlugRoute
   '/pages/$slug': typeof PagesSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/api/public/printify-webhook': typeof ApiPublicPrintifyWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -199,12 +214,14 @@ export interface FileRoutesByTo {
   '/admin/navigation': typeof AdminNavigationRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/pages': typeof AdminPagesRoute
+  '/admin/printify': typeof AdminPrintifyRoute
   '/admin/products': typeof AdminProductsRoute
   '/admin/receipts': typeof AdminReceiptsRoute
   '/collections/$slug': typeof CollectionsSlugRoute
   '/pages/$slug': typeof PagesSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/admin': typeof AdminIndexRoute
+  '/api/public/printify-webhook': typeof ApiPublicPrintifyWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -226,12 +243,14 @@ export interface FileRoutesById {
   '/admin/navigation': typeof AdminNavigationRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/pages': typeof AdminPagesRoute
+  '/admin/printify': typeof AdminPrintifyRoute
   '/admin/products': typeof AdminProductsRoute
   '/admin/receipts': typeof AdminReceiptsRoute
   '/collections/$slug': typeof CollectionsSlugRoute
   '/pages/$slug': typeof PagesSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/api/public/printify-webhook': typeof ApiPublicPrintifyWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -254,12 +273,14 @@ export interface FileRouteTypes {
     | '/admin/navigation'
     | '/admin/orders'
     | '/admin/pages'
+    | '/admin/printify'
     | '/admin/products'
     | '/admin/receipts'
     | '/collections/$slug'
     | '/pages/$slug'
     | '/products/$slug'
     | '/admin/'
+    | '/api/public/printify-webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -279,12 +300,14 @@ export interface FileRouteTypes {
     | '/admin/navigation'
     | '/admin/orders'
     | '/admin/pages'
+    | '/admin/printify'
     | '/admin/products'
     | '/admin/receipts'
     | '/collections/$slug'
     | '/pages/$slug'
     | '/products/$slug'
     | '/admin'
+    | '/api/public/printify-webhook'
   id:
     | '__root__'
     | '/'
@@ -305,12 +328,14 @@ export interface FileRouteTypes {
     | '/admin/navigation'
     | '/admin/orders'
     | '/admin/pages'
+    | '/admin/printify'
     | '/admin/products'
     | '/admin/receipts'
     | '/collections/$slug'
     | '/pages/$slug'
     | '/products/$slug'
     | '/admin/'
+    | '/api/public/printify-webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -327,6 +352,7 @@ export interface RootRouteChildren {
   CollectionsSlugRoute: typeof CollectionsSlugRoute
   PagesSlugRoute: typeof PagesSlugRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
+  ApiPublicPrintifyWebhookRoute: typeof ApiPublicPrintifyWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -464,6 +490,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPagesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/printify': {
+      id: '/admin/printify'
+      path: '/printify'
+      fullPath: '/admin/printify'
+      preLoaderRoute: typeof AdminPrintifyRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/products': {
       id: '/admin/products'
       path: '/products'
@@ -499,6 +532,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/printify-webhook': {
+      id: '/api/public/printify-webhook'
+      path: '/api/public/printify-webhook'
+      fullPath: '/api/public/printify-webhook'
+      preLoaderRoute: typeof ApiPublicPrintifyWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -511,6 +551,7 @@ interface AdminRouteChildren {
   AdminNavigationRoute: typeof AdminNavigationRoute
   AdminOrdersRoute: typeof AdminOrdersRoute
   AdminPagesRoute: typeof AdminPagesRoute
+  AdminPrintifyRoute: typeof AdminPrintifyRoute
   AdminProductsRoute: typeof AdminProductsRoute
   AdminReceiptsRoute: typeof AdminReceiptsRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -525,6 +566,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminNavigationRoute: AdminNavigationRoute,
   AdminOrdersRoute: AdminOrdersRoute,
   AdminPagesRoute: AdminPagesRoute,
+  AdminPrintifyRoute: AdminPrintifyRoute,
   AdminProductsRoute: AdminProductsRoute,
   AdminReceiptsRoute: AdminReceiptsRoute,
   AdminIndexRoute: AdminIndexRoute,
@@ -546,6 +588,7 @@ const rootRouteChildren: RootRouteChildren = {
   CollectionsSlugRoute: CollectionsSlugRoute,
   PagesSlugRoute: PagesSlugRoute,
   ProductsSlugRoute: ProductsSlugRoute,
+  ApiPublicPrintifyWebhookRoute: ApiPublicPrintifyWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
