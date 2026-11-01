@@ -424,6 +424,7 @@ export type Database = {
       }
       orders: {
         Row: {
+          carrier: string | null
           created_at: string
           discount_cents: number
           email: string
@@ -432,6 +433,8 @@ export type Database = {
           internal_notes: string | null
           order_number: string
           payment_status: string
+          printify_order_id: string | null
+          printify_status: string | null
           shipping_address: Json | null
           shipping_cents: number
           subtotal_cents: number
@@ -441,6 +444,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          carrier?: string | null
           created_at?: string
           discount_cents?: number
           email: string
@@ -449,6 +453,8 @@ export type Database = {
           internal_notes?: string | null
           order_number: string
           payment_status?: string
+          printify_order_id?: string | null
+          printify_status?: string | null
           shipping_address?: Json | null
           shipping_cents?: number
           subtotal_cents?: number
@@ -458,6 +464,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          carrier?: string | null
           created_at?: string
           discount_cents?: number
           email?: string
@@ -466,6 +473,8 @@ export type Database = {
           internal_notes?: string | null
           order_number?: string
           payment_status?: string
+          printify_order_id?: string | null
+          printify_status?: string | null
           shipping_address?: Json | null
           shipping_cents?: number
           subtotal_cents?: number
@@ -580,6 +589,7 @@ export type Database = {
           options: Json
           position: number
           price_cents: number | null
+          printify_variant_id: number | null
           product_id: string
           sku: string | null
           stock: number
@@ -590,6 +600,7 @@ export type Database = {
           options?: Json
           position?: number
           price_cents?: number | null
+          printify_variant_id?: number | null
           product_id: string
           sku?: string | null
           stock?: number
@@ -600,6 +611,7 @@ export type Database = {
           options?: Json
           position?: number
           price_cents?: number | null
+          printify_variant_id?: number | null
           product_id?: string
           sku?: string | null
           stock?: number
@@ -621,12 +633,14 @@ export type Database = {
           compare_at_price_cents: number | null
           created_at: string
           description: string | null
+          fulfillment_source: string
           id: string
           is_featured: boolean
           is_new: boolean
           is_published: boolean
           name: string
           price_cents: number
+          printify_product_id: string | null
           seo_description: string | null
           seo_title: string | null
           sku: string | null
@@ -640,12 +654,14 @@ export type Database = {
           compare_at_price_cents?: number | null
           created_at?: string
           description?: string | null
+          fulfillment_source?: string
           id?: string
           is_featured?: boolean
           is_new?: boolean
           is_published?: boolean
           name: string
           price_cents?: number
+          printify_product_id?: string | null
           seo_description?: string | null
           seo_title?: string | null
           sku?: string | null
@@ -659,12 +675,14 @@ export type Database = {
           compare_at_price_cents?: number | null
           created_at?: string
           description?: string | null
+          fulfillment_source?: string
           id?: string
           is_featured?: boolean
           is_new?: boolean
           is_published?: boolean
           name?: string
           price_cents?: number
+          printify_product_id?: string | null
           seo_description?: string | null
           seo_title?: string | null
           sku?: string | null

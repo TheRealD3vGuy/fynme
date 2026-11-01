@@ -26,6 +26,7 @@ const NAV = [
   { to: "/admin/discounts", label: "Promo Codes" },
   { to: "/admin/products", label: "Products" },
   { to: "/admin/inventory", label: "Inventory" },
+  { to: "/admin/printify", label: "Printify" },
   { to: "/admin/collections", label: "Collections" },
   { to: "/admin/homepage", label: "Homepage" },
   { to: "/admin/pages", label: "Pages" },
