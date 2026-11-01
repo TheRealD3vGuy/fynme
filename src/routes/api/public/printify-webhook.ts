@@ -28,19 +28,19 @@ export const Route = createFileRoute("/api/public/printify-webhook")({
         const d = resource.data ?? {};
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-        const update: Record<string, string> = {};
-        if (typeof d["status"] === "string") update["printify_status"] = d["status"];
-        if (type === "order:sent-to-production") update["printify_status"] = "in-production";
+        const update: { printify_status?: string; tracking_number?: string; carrier?: string; fulfillment_status?: string } = {};
+        if (typeof d["status"] === "string") update.printify_status = d["status"];
+        if (type === "order:sent-to-production") update.printify_status = "in-production";
         if (type === "order:shipment:created") {
           const ship = Array.isArray(d["shipments"]) ? d["shipments"][0] : d;
-          if (ship?.number) update["tracking_number"] = String(ship.number);
-          if (ship?.carrier) update["carrier"] = String(ship.carrier);
-          update["fulfillment_status"] = "shipped";
-          update["printify_status"] = "shipped";
+          if (ship?.number) update.tracking_number = String(ship.number);
+          if (ship?.carrier) update.carrier = String(ship.carrier);
+          update.fulfillment_status = "shipped";
+          update.printify_status = "shipped";
         }
         if (type === "order:shipment:delivered") {
-          update["fulfillment_status"] = "delivered";
-          update["printify_status"] = "delivered";
+          update.fulfillment_status = "delivered";
+          update.printify_status = "delivered";
         }
         if (Object.keys(update).length) {
           await supabaseAdmin.from("orders").update(update).eq("printify_order_id", resource.id);
