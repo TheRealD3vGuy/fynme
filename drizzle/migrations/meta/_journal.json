@@ -36,6 +36,13 @@
       "when": 1792512756159,
       "tag": "0004_create_receipts",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1793564974741,
+      "tag": "0005_printify_fields",
+      "breakpoints": true
     }
   ]
 }
