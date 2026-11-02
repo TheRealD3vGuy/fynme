@@ -43,6 +43,13 @@
       "when": 1793564974741,
       "tag": "0005_printify_fields",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793642109786,
+      "tag": "0006_site_images_staff_policies",
+      "breakpoints": true
     }
   ]
 }

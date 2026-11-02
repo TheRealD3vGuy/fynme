@@ -31,6 +31,7 @@ const NAV = [
   { to: "/admin/homepage", label: "Homepage" },
   { to: "/admin/pages", label: "Pages" },
   { to: "/admin/navigation", label: "Menus & Footer" },
+  { to: "/admin/export", label: "Export & Guide" },
 ] as const;
 
 function AdminLayout() {

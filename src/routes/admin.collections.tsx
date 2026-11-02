@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { slugify, logActivity } from "@/lib/admin";
+import { ImageDrop } from "@/components/admin/ImageDrop";
 
 export const Route = createFileRoute("/admin/collections")({
   component: CollectionsAdmin,
@@ -62,9 +63,9 @@ function CollectionsAdmin() {
           <div className="grid gap-3 sm:grid-cols-2">
             <Input placeholder="Name" value={editing.name} onChange={(e) => set({ name: e.target.value })} />
             <Input placeholder={slugify(editing.name) || "web-address"} value={editing.slug} onChange={(e) => set({ slug: slugify(e.target.value) })} />
-            <Input placeholder="Cover photo link" value={editing.cover_image_url} onChange={(e) => set({ cover_image_url: e.target.value })} />
             <Input type="number" placeholder="Order" value={editing.position} onChange={(e) => set({ position: parseInt(e.target.value || "0", 10) })} />
           </div>
+          <ImageDrop label="Cover photo" value={editing.cover_image_url} onChange={(url) => set({ cover_image_url: url })} />
           <Textarea placeholder="Description" value={editing.description} onChange={(e) => set({ description: e.target.value })} />
           <div className="flex gap-6 text-sm">
             <label className="flex items-center gap-2"><Switch checked={editing.is_published} onCheckedChange={(v) => set({ is_published: v })} /> Published</label>
