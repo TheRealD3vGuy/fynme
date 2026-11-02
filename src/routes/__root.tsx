@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
+  useLocation,
   Link,
   createRootRouteWithContext,
   useRouter,
@@ -141,6 +142,15 @@ function LiveUpdates() {
   return null;
 }
 
+function PageTransition() {
+  const pathname = useLocation({ select: (l) => l.pathname });
+  return (
+    <div key={pathname} className="animate-page-enter">
+      <Outlet />
+    </div>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
@@ -150,7 +160,7 @@ function RootComponent() {
         <div className="flex min-h-screen flex-col">
           <Header />
           <main className="flex-1">
-            <Outlet />
+            <PageTransition />
           </main>
           <Footer />
         </div>
