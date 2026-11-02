@@ -1,6 +1,7 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { Reveal } from "@/lib/reveal";
 
 export const Route = createFileRoute("/pages/$slug")({
   head: ({ params }) => ({
@@ -58,7 +59,7 @@ function CmsPage() {
       {sections.map((s, i) => {
         const content = s.content as { heading?: string; body?: string };
         return (
-          <div key={i} className="mt-8">
+          <Reveal key={i} delay={i * 80} className="mt-8">
             {content.heading && (
               <h2 className="font-display text-2xl font-semibold uppercase tracking-wide">
                 {content.heading}
@@ -67,7 +68,7 @@ function CmsPage() {
             <p className="mt-3 whitespace-pre-line leading-relaxed text-muted-foreground">
               {content.body}
             </p>
-          </div>
+          </Reveal>
         );
       })}
     </div>
