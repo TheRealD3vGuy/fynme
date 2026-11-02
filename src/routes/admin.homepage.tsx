@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { logActivity } from "@/lib/admin";
+import { ImageDrop } from "@/components/admin/ImageDrop";
 
 export const Route = createFileRoute("/admin/homepage")({
   component: HomepageAdmin,
@@ -21,7 +22,6 @@ const HERO_FIELDS = [
   ["subtitle", "Subtitle"],
   ["cta_text", "Button text"],
   ["cta_href", "Button link"],
-  ["image_url", "Background photo link"],
 ] as const;
 const STORE_FIELDS = [
   ["name", "Store name"],
@@ -71,6 +71,7 @@ function HomepageAdmin() {
         {HERO_FIELDS.map(([f, l]) => (
           <div key={f}><Label>{l}</Label><Input value={String(val("hero", f) ?? "")} onChange={(e) => setVal("hero", f, e.target.value)} /></div>
         ))}
+        <ImageDrop label="Background photo" value={String(val("hero", "image_url") ?? "")} onChange={(url) => setVal("hero", "image_url", url)} />
         <div>
           <Label>Photo darkness (0–1)</Label>
           <Input type="number" step="0.05" min="0" max="1" value={String(val("hero", "overlay") ?? 0.45)} onChange={(e) => setVal("hero", "overlay", parseFloat(e.target.value || "0"))} />

@@ -10,6 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { slugify, logActivity, dollarsToCents, centsToDollars } from "@/lib/admin";
+import { ImageDrop } from "@/components/admin/ImageDrop";
 
 export const Route = createFileRoute("/admin/products")({
   component: ProductsAdmin,
@@ -203,11 +204,7 @@ function ProductsAdmin() {
               </div>
               <div><Label>Description</Label><Textarea rows={4} value={form.description} onChange={(e) => set({ description: e.target.value })} /></div>
               <div><Label>Tags (comma separated — use "sticker" for stickers)</Label><Input value={form.tags} onChange={(e) => set({ tags: e.target.value })} /></div>
-              <div>
-                <Label>Photo link</Label>
-                <Input value={form.image_url} placeholder="https://..." onChange={(e) => set({ image_url: e.target.value })} />
-                {form.image_url && <img src={form.image_url} alt="" className="mt-2 h-24 w-24 object-cover" />}
-              </div>
+              <ImageDrop label="Product photo" value={form.image_url} onChange={(url) => set({ image_url: url })} />
               <div className="flex flex-wrap gap-6">
                 {(["is_published", "is_featured", "is_new"] as const).map((k) => (
                   <label key={k} className="flex items-center gap-2 text-sm">
