@@ -12,15 +12,15 @@ export function ImageDrop({ value, onChange, label = "Photo" }: { value: string;
 
   async function upload(file: File | undefined) {
     if (!file) return;
-    if (!file.type.startsWith("image/")) return toast.error("Please choose an image file.");
+    if (!file.type.startsWith("image/")) { toast.error("Please choose an image file."); return; }
     setBusy(true);
     const ext = file.name.split(".").pop() || "jpg";
     const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
     const { error } = await supabase.storage.from("site-images").upload(path, file, { contentType: file.type });
-    if (error) { setBusy(false); return toast.error(error.message); }
+    if (error) { setBusy(false); toast.error(error.message); return; }
     const { data, error: e2 } = await supabase.storage.from("site-images").createSignedUrl(path, TEN_YEARS);
     setBusy(false);
-    if (e2 || !data) return toast.error(e2?.message ?? "Upload failed.");
+    if (e2 || !data) { toast.error(e2?.message ?? "Upload failed."); return; }
     onChange(data.signedUrl);
     toast.success("Photo uploaded.");
   }
