@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Volume2, VolumeX } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -20,6 +21,84 @@ interface HeroSettings {
   cta_href: string;
   overlay: number;
   image_url: string;
+  media_type?: "image" | "slideshow" | "video";
+  slides?: string[];
+  slide_seconds?: number;
+  video_url?: string;
+}
+
+function HeroMedia({ hero }: { hero: HeroSettings }) {
+  const type = hero.media_type ?? "image";
+  const slides = (hero.slides ?? []).filter(Boolean);
+  const [idx, setIdx] = useState(0);
+  const [muted, setMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (type !== "slideshow" || slides.length < 2) return;
+    const ms = Math.max(2, hero.slide_seconds ?? 5) * 1000;
+    const t = setInterval(() => setIdx((i) => (i + 1) % slides.length), ms);
+    return () => clearInterval(t);
+  }, [type, slides.length, hero.slide_seconds]);
+
+  const imgClass = "absolute inset-0 h-full w-full object-cover";
+
+  if (type === "video" && hero.video_url) {
+    return (
+      <>
+        <video
+          ref={videoRef}
+          src={hero.video_url}
+          poster={hero.image_url || undefined}
+          autoPlay
+          muted={muted}
+          loop
+          playsInline
+          className={`animate-hero-image ${imgClass}`}
+        />
+        <button
+          type="button"
+          onClick={() => {
+            const next = !muted;
+            setMuted(next);
+            if (videoRef.current) { videoRef.current.muted = next; void videoRef.current.play().catch(() => {}); }
+          }}
+          aria-label={muted ? "Unmute video" : "Mute video"}
+          className="absolute left-4 top-4 z-10 flex items-center gap-2 border border-border bg-background/70 px-3 py-2 text-xs font-medium uppercase tracking-wide text-foreground backdrop-blur transition-colors hover:bg-background"
+        >
+          {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+          {muted ? "Unmute" : "Mute"}
+        </button>
+      </>
+    );
+  }
+
+  if (type === "slideshow" && slides.length > 0) {
+    return (
+      <>
+        {slides.map((src, i) => (
+          <img
+            key={src + i}
+            src={src}
+            alt=""
+            className={`${imgClass} transition-opacity duration-1000 ease-in-out ${i === idx % slides.length ? "opacity-100" : "opacity-0"}`}
+          />
+        ))}
+        {slides.length > 1 && (
+          <div className="absolute left-4 top-4 z-10 flex gap-1.5">
+            {slides.map((_, i) => (
+              <button key={i} type="button" aria-label={`Show slide ${i + 1}`} onClick={() => setIdx(i)}
+                className={`h-1 w-6 transition-colors ${i === idx % slides.length ? "bg-foreground" : "bg-foreground/30"}`} />
+            ))}
+          </div>
+        )}
+      </>
+    );
+  }
+
+  return hero.image_url ? (
+    <img src={hero.image_url} alt="Foggy Pacific Northwest forest" className={`animate-hero-image ${imgClass}`} width={1920} height={1088} />
+  ) : null;
 }
 
 interface HomepageSettings {
@@ -89,15 +168,7 @@ function HomePage() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="relative h-[60vh] min-h-[400px] w-full md:h-[75vh]">
-          {hero?.image_url && (
-            <img
-              src={hero.image_url}
-              alt="Foggy Pacific Northwest forest"
-              className="animate-hero-image absolute inset-0 h-full w-full object-cover"
-              width={1920}
-              height={1088}
-            />
-          )}
+          {hero && <HeroMedia hero={hero} />}
           <div
             className="absolute inset-0 bg-background"
             style={{ opacity: hero?.overlay ?? 0.45 }}
