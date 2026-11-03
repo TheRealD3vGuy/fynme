@@ -143,9 +143,11 @@ function LiveUpdates() {
 }
 
 function PageTransition() {
-  const pathname = useLocation({ select: (l) => l.pathname });
+  // Key on the top-level section only, so nested pages (e.g. staff panel tabs)
+  // don't remount their whole layout and re-fetch on every click.
+  const section = useLocation({ select: (l) => l.pathname.split("/")[1] ?? "" });
   return (
-    <div key={pathname} className="animate-page-enter">
+    <div key={section} className="animate-page-enter">
       <Outlet />
     </div>
   );

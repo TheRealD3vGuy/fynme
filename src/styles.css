@@ -142,49 +142,51 @@
 /* Scroll-reveal: content fades and rises into place as you scroll */
 .reveal {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translate3d(0, 14px, 0);
   transition:
-    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  backface-visibility: hidden;
 }
 .reveal-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 /* Hero entrance: headline and subtitle rise in with a gentle stagger */
 @keyframes hero-rise {
   from {
     opacity: 0;
-    transform: translateY(36px);
+    transform: translate3d(0, 20px, 0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 @keyframes hero-image-settle {
   from {
-    transform: scale(1.06);
+    transform: scale3d(1.04, 1.04, 1);
   }
   to {
-    transform: scale(1);
+    transform: scale3d(1, 1, 1);
   }
 }
 @utility animate-hero-rise {
-  animation: hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: hero-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 @utility animate-hero-image {
-  animation: hero-image-settle 2.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: hero-image-settle 1.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  backface-visibility: hidden;
 }
 
+/* Opacity-only page fade: no layout shift or transform jitter */
 @keyframes page-enter {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 @utility animate-page-enter {
-  animation: page-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: page-enter 0.35s ease-out both;
 }
 
 /* Smooth default easing for interactive elements */
