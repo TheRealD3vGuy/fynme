@@ -71,7 +71,46 @@ function HomepageAdmin() {
         {HERO_FIELDS.map(([f, l]) => (
           <div key={f}><Label>{l}</Label><Input value={String(val("hero", f) ?? "")} onChange={(e) => setVal("hero", f, e.target.value)} /></div>
         ))}
-        <ImageDrop label="Background photo" value={String(val("hero", "image_url") ?? "")} onChange={(url) => setVal("hero", "image_url", url)} />
+        <div>
+          <Label>Background type</Label>
+          <div className="mt-1 grid grid-cols-3 border border-border">
+            {(["image", "slideshow", "video"] as const).map((m) => {
+              const active = (val("hero", "media_type") ?? "image") === m;
+              return (
+                <button key={m} type="button" onClick={() => setVal("hero", "media_type", m)}
+                  className={`py-2 text-sm font-medium uppercase tracking-wide transition-colors ${active ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"}`}>
+                  {m === "image" ? "Single photo" : m === "slideshow" ? "Slideshow" : "Video"}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        {(val("hero", "media_type") ?? "image") === "image" && (
+          <ImageDrop label="Background photo" value={String(val("hero", "image_url") ?? "")} onChange={(url) => setVal("hero", "image_url", url)} />
+        )}
+        {val("hero", "media_type") === "slideshow" && (() => {
+          const slides = (Array.isArray(val("hero", "slides")) ? (val("hero", "slides") as string[]) : []).filter(Boolean);
+          return (
+            <div className="space-y-3">
+              {slides.map((u, i) => (
+                <ImageDrop key={i} label={`Slide ${i + 1}`} value={u}
+                  onChange={(url) => setVal("hero", "slides", url ? slides.map((x, j) => (j === i ? url : x)) : slides.filter((_, j) => j !== i))} />
+              ))}
+              <ImageDrop key={`new-${slides.length}`} label="Add a slide" value=""
+                onChange={(url) => url && setVal("hero", "slides", [...slides, url])} />
+              <div>
+                <Label>Seconds per slide</Label>
+                <Input type="number" min="2" max="30" value={String(val("hero", "slide_seconds") ?? 5)} onChange={(e) => setVal("hero", "slide_seconds", parseFloat(e.target.value || "5"))} />
+              </div>
+            </div>
+          );
+        })()}
+        {val("hero", "media_type") === "video" && (
+          <>
+            <ImageDrop kind="video" label="Background video (plays silently until visitors unmute)" value={String(val("hero", "video_url") ?? "")} onChange={(url) => setVal("hero", "video_url", url)} />
+            <ImageDrop label="Cover photo (shown while video loads)" value={String(val("hero", "image_url") ?? "")} onChange={(url) => setVal("hero", "image_url", url)} />
+          </>
+        )}
         <div>
           <Label>Photo darkness (0–1)</Label>
           <Input type="number" step="0.05" min="0" max="1" value={String(val("hero", "overlay") ?? 0.45)} onChange={(e) => setVal("hero", "overlay", parseFloat(e.target.value || "0"))} />
