@@ -37,9 +37,10 @@ function HeroMedia({ hero }: { hero: HeroSettings }) {
   useEffect(() => {
     if (type !== "slideshow" || slides.length < 2) return;
     const ms = Math.max(2, hero.slide_seconds ?? 5) * 1000;
-    const t = setInterval(() => setIdx((i) => (i + 1) % slides.length), ms);
-    return () => clearInterval(t);
-  }, [type, slides.length, hero.slide_seconds]);
+    const t = setTimeout(() => setIdx((i) => (i + 1) % slides.length), ms);
+    return () => clearTimeout(t);
+  }, [type, slides.length, hero.slide_seconds, idx]);
+  const slideMs = Math.max(2, hero.slide_seconds ?? 5) * 1000;
 
   const imgClass = "absolute inset-0 h-full w-full object-cover";
 
@@ -85,11 +86,20 @@ function HeroMedia({ hero }: { hero: HeroSettings }) {
           />
         ))}
         {slides.length > 1 && (
-          <div className="absolute left-4 top-4 z-10 flex gap-1.5">
-            {slides.map((_, i) => (
-              <button key={i} type="button" aria-label={`Show slide ${i + 1}`} onClick={() => setIdx(i)}
-                className={`h-1 w-6 transition-colors ${i === idx % slides.length ? "bg-foreground" : "bg-foreground/30"}`} />
-            ))}
+          <div className="absolute left-4 right-4 top-4 z-10 flex gap-1.5 sm:right-auto sm:w-80">
+            {slides.map((_, i) => {
+              const cur = idx % slides.length;
+              return (
+                <button key={i} type="button" aria-label={`Show slide ${i + 1}`} onClick={() => setIdx(i)}
+                  className="relative h-1 flex-1 overflow-hidden bg-foreground/30">
+                  {i < cur && <span className="absolute inset-0 bg-foreground" />}
+                  {i === cur && (
+                    <span key={`p-${idx}`} className="animate-slide-progress absolute inset-0 origin-left bg-foreground"
+                      style={{ animationDuration: `${slideMs}ms` }} />
+                  )}
+                </button>
+              );
+            })}
           </div>
         )}
       </>

@@ -16,6 +16,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "../lib/cart";
 import { useLiveStoreUpdates } from "../lib/live";
 import { Header } from "../components/store/Header";
+import { NewsBar } from "../components/store/NewsBar";
 import { Footer } from "../components/store/Footer";
 import { CartDrawer } from "../components/store/CartDrawer";
 import { Toaster } from "../components/ui/sonner";
@@ -160,6 +161,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <CartProvider>
         <div className="flex min-h-screen flex-col">
+          <NewsBar />
           <Header />
           <main className="flex-1">
             <PageTransition />
