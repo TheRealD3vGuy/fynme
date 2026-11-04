@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { MEDIA_UPLOAD_LIMIT_LABEL, mediaUploadError } from "@/lib/upload";
 
 const TEN_YEARS = 60 * 60 * 24 * 365 * 10;
 
@@ -22,9 +24,11 @@ export function ImageDrop({
   const noun = kind === "video" ? "video" : "photo";
 
   async function upload(file: File | undefined) {
-    if (!file) return;
-    if (!file.type.startsWith(`${kind}/`)) { toast.error(`Please choose a ${noun} file.`); return; }
+    if (!file || busy) return;
+    const validationError = mediaUploadError(file, kind);
+    if (validationError) { toast.error(validationError); return; }
     setBusy(true);
+    try {
     const ext = file.name.split(".").pop() || (kind === "video" ? "mp4" : "jpg");
     const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
     const { error } = await supabase.storage.from("site-images").upload(path, file, { contentType: file.type });
@@ -34,6 +38,12 @@ export function ImageDrop({
     if (e2 || !data) { toast.error(e2?.message ?? "Upload failed."); return; }
     onChange(data.signedUrl);
     toast.success(kind === "video" ? "Video uploaded." : "Photo uploaded.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Upload failed. Please try again.");
+    } finally {
+      setBusy(false);
+      if (input.current) input.current.value = "";
+    }
   }
 
   return (
@@ -61,13 +71,16 @@ export function ImageDrop({
         <div className="text-sm text-muted-foreground">
           {busy ? "Uploading..." : <>Drag & drop a {noun} here, or <span className="text-foreground underline">browse</span></>}
           {value && !busy && (
-            <button type="button" className="mt-2 block text-xs text-accent hover:underline" onClick={(e) => { e.stopPropagation(); onChange(""); }}>
+            <Button type="button" variant="link" size="sm" className="mt-2 block h-auto p-0 text-xs text-accent" onClick={(e) => { e.stopPropagation(); onChange(""); }}>
               Remove {noun}
-            </button>
+            </Button>
           )}
         </div>
         <input ref={input} type="file" accept={`${kind}/*`} hidden onChange={(e) => upload(e.target.files?.[0])} />
       </div>
+      <p className="mt-2 text-xs text-muted-foreground">
+        {kind === "video" ? "Video files" : "Image files"} · Maximum {MEDIA_UPLOAD_LIMIT_LABEL} per file
+      </p>
     </div>
   );
 }
