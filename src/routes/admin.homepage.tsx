@@ -54,7 +54,7 @@ function HomepageAdmin() {
   const setVal = (k: string, f: string, v: Json) => setS((p) => ({ ...p, [k]: { ...(p[k] ?? {}), [f]: v } }));
 
   async function save() {
-    for (const key of ["hero", "homepage", "store"]) {
+    for (const key of ["announcement", "hero", "homepage", "store"]) {
       const { error } = await supabase.from("site_settings").upsert({ key, value: s[key] ?? {}, updated_at: new Date().toISOString() });
       if (error) { toast.error(error.message); return; }
     }
@@ -66,6 +66,43 @@ function HomepageAdmin() {
   return (
     <div className="max-w-2xl">
       <h1 className="font-display text-4xl font-bold uppercase tracking-wide">Homepage</h1>
+      <h2 className="mt-8 section-label text-sm text-muted-foreground">News bar (scrolls across the top)</h2>
+      <div className="mt-3 space-y-3">
+        <label className="flex items-center gap-3 text-sm">
+          <Switch checked={val("announcement", "enabled") === true} onCheckedChange={(v) => setVal("announcement", "enabled", v)} /> Show news bar
+        </label>
+        <div>
+          <Label>Messages (one per line)</Label>
+          <textarea rows={4} className="mt-1 w-full border border-input bg-background px-3 py-2 text-sm"
+            value={(Array.isArray(val("announcement", "items")) ? (val("announcement", "items") as string[]) : []).join("\n")}
+            onChange={(e) => setVal("announcement", "items", e.target.value.split("\n"))} />
+        </div>
+        <div><Label>Link when clicked (optional)</Label><Input value={String(val("announcement", "link") ?? "")} onChange={(e) => setVal("announcement", "link", e.target.value)} /></div>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <Label>Seconds per loop (lower = faster)</Label>
+            <Input type="number" min="5" max="120" value={String(val("announcement", "speed") ?? 30)} onChange={(e) => setVal("announcement", "speed", parseFloat(e.target.value || "30"))} />
+          </div>
+          <div>
+            <Label>Color</Label>
+            <select className="mt-1 h-9 w-full border border-input bg-background px-2 text-sm" value={String(val("announcement", "color") ?? "terracotta")} onChange={(e) => setVal("announcement", "color", e.target.value)}>
+              <option value="terracotta">Terracotta</option><option value="forest">Forest green</option><option value="gold">Warm yellow</option><option value="dark">Dark</option>
+            </select>
+          </div>
+          <div>
+            <Label>Direction</Label>
+            <select className="mt-1 h-9 w-full border border-input bg-background px-2 text-sm" value={String(val("announcement", "direction") ?? "left")} onChange={(e) => setVal("announcement", "direction", e.target.value)}>
+              <option value="left">Right to left</option><option value="right">Left to right</option>
+            </select>
+          </div>
+        </div>
+        <label className="flex items-center gap-3 text-sm">
+          <Switch checked={val("announcement", "pause_on_hover") !== false} onCheckedChange={(v) => setVal("announcement", "pause_on_hover", v)} /> Pause when mouse is over it
+        </label>
+        <label className="flex items-center gap-3 text-sm">
+          <Switch checked={val("announcement", "uppercase") !== false} onCheckedChange={(v) => setVal("announcement", "uppercase", v)} /> All capitals
+        </label>
+      </div>
       <h2 className="mt-8 section-label text-sm text-muted-foreground">Top banner</h2>
       <div className="mt-3 space-y-3">
         {HERO_FIELDS.map(([f, l]) => (
