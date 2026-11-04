@@ -1,6 +1,7 @@
 # Find Your North — Roadmap
 
 ## Done
+- Photo/video upload boxes show and enforce the configured 1 GB per-file limit.
 - Storefront: homepage, Discover (search/filters/sort), product & collection pages, cart + drawer, checkout placeholder, auth (email + Google), account w/ change password, about, contact, testimony
 - Staff panel: overview, products, inventory, collections, homepage, pages, menus/footer, orders, customers, inbox, discounts, receipts
 - Realtime live updates for visitors; FYN logo + favicon
@@ -8,7 +9,6 @@
 
 ## Open
 - [ ] Browser-verify: receipt printer, quick add, size guide, free-shipping bar, forgot-password email end-to-end
-- [ ] Photo uploads for staff (currently paste-a-URL; media bucket private, needs scoped policy)
 - [ ] Stripe checkout + webhooks (needs Pro plan / keys; verify server-side only)
 - [ ] Free-shipping threshold is placeholder $75 — confirm real amount with owner
 - [ ] Testimony page is a general draft — awaiting owner's real story
