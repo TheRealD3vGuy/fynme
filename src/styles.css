@@ -189,6 +189,24 @@
   animation: page-enter 0.35s ease-out both;
 }
 
+/* Slideshow progress fill */
+@keyframes slide-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@utility animate-slide-progress {
+  animation: slide-progress linear both;
+}
+
+/* Scrolling news bar */
+@keyframes news-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@utility animate-news-marquee {
+  animation: news-marquee linear infinite;
+}
+
 /* Smooth default easing for interactive elements */
 @utility ease-brand {
   transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
