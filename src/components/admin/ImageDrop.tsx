@@ -12,11 +12,15 @@ export function ImageDrop({
   onChange,
   label = "Photo",
   kind = "image",
+  bucket = "site-images",
+  privatePath = false,
 }: {
   value: string;
   onChange: (url: string) => void;
   label?: string;
   kind?: "image" | "video";
+  bucket?: string;
+  privatePath?: boolean;
 }) {
   const input = useRef<HTMLInputElement>(null);
   const [over, setOver] = useState(false);
@@ -31,9 +35,10 @@ export function ImageDrop({
     try {
     const ext = file.name.split(".").pop() || (kind === "video" ? "mp4" : "jpg");
     const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-    const { error } = await supabase.storage.from("site-images").upload(path, file, { contentType: file.type });
+    const { error } = await supabase.storage.from(bucket).upload(path, file, { contentType: file.type });
     if (error) { setBusy(false); toast.error(error.message); return; }
-    const { data, error: e2 } = await supabase.storage.from("site-images").createSignedUrl(path, TEN_YEARS);
+    if (privatePath) { onChange(path); toast.success("Private media uploaded."); return; }
+    const { data, error: e2 } = await supabase.storage.from(bucket).createSignedUrl(path, TEN_YEARS);
     setBusy(false);
     if (e2 || !data) { toast.error(e2?.message ?? "Upload failed."); return; }
     onChange(data.signedUrl);
@@ -59,7 +64,7 @@ export function ImageDrop({
         onDrop={(e) => { e.preventDefault(); setOver(false); upload(e.dataTransfer.files[0]); }}
         className={`flex cursor-pointer items-center gap-4 border border-dashed p-4 transition-colors ${over ? "border-primary bg-card" : "border-border bg-secondary hover:border-muted-foreground"}`}
       >
-        {value ? (
+        {value && !privatePath ? (
           kind === "video" ? (
             <video src={value} muted className="h-20 w-32 shrink-0 object-cover" />
           ) : (
@@ -69,6 +74,7 @@ export function ImageDrop({
           <div className={`${kind === "video" ? "w-32" : "w-20"} h-20 shrink-0 bg-card`} />
         )}
         <div className="text-sm text-muted-foreground">
+          {value && privatePath && <p className="mb-1 break-all text-foreground">{value}</p>}
           {busy ? "Uploading..." : <>Drag & drop a {noun} here, or <span className="text-foreground underline">browse</span></>}
           {value && !busy && (
             <Button type="button" variant="link" size="sm" className="mt-2 block h-auto p-0 text-xs text-accent" onClick={(e) => { e.stopPropagation(); onChange(""); }}>

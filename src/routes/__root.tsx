@@ -156,19 +156,19 @@ function PageTransition() {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const privatePage = useLocation({ select: l => l.pathname === "/privevents" });
 
   return (
     <QueryClientProvider client={queryClient}>
       <CartProvider>
         <div className="flex min-h-screen flex-col">
-          <NewsBar />
-          <Header />
+          {!privatePage && <><NewsBar /><Header /></>}
           <main className="flex-1">
             <PageTransition />
           </main>
-          <Footer />
+          {!privatePage && <Footer />}
         </div>
-        <CartDrawer />
+        {!privatePage && <CartDrawer />}
         <Toaster />
         <LiveUpdates />
       </CartProvider>
