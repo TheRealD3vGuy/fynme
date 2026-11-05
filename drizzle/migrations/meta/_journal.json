@@ -50,6 +50,13 @@
       "when": 1793642109786,
       "tag": "0006_site_images_staff_policies",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1793894217429,
+      "tag": "0007_private_events",
+      "breakpoints": true
     }
   ]
 }

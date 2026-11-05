@@ -256,6 +256,35 @@ export type Database = {
         }
         Relationships: []
       }
+      event_guest_sessions: {
+        Row: {
+          access_version: number
+          created_at: string
+          event_id: string
+          token_hash: string
+        }
+        Insert: {
+          access_version: number
+          created_at?: string
+          event_id: string
+          token_hash: string
+        }
+        Update: {
+          access_version?: number
+          created_at?: string
+          event_id?: string
+          token_hash?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_guest_sessions_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "private_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       inventory_adjustments: {
         Row: {
           created_at: string
@@ -545,6 +574,69 @@ export type Database = {
           seo_title?: string | null
           slug?: string
           status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      private_events: {
+        Row: {
+          access_version: number
+          address: string
+          code_hash: string
+          contact_email: string
+          created_at: string
+          description: string
+          details: Json
+          ends_at: string
+          hero: Json
+          id: string
+          is_locked: boolean
+          is_published: boolean
+          location_name: string
+          starts_at: string
+          subtitle: string
+          timezone: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          access_version?: number
+          address?: string
+          code_hash: string
+          contact_email?: string
+          created_at?: string
+          description?: string
+          details?: Json
+          ends_at: string
+          hero?: Json
+          id?: string
+          is_locked?: boolean
+          is_published?: boolean
+          location_name?: string
+          starts_at: string
+          subtitle?: string
+          timezone?: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          access_version?: number
+          address?: string
+          code_hash?: string
+          contact_email?: string
+          created_at?: string
+          description?: string
+          details?: Json
+          ends_at?: string
+          hero?: Json
+          id?: string
+          is_locked?: boolean
+          is_published?: boolean
+          location_name?: string
+          starts_at?: string
+          subtitle?: string
+          timezone?: string
           title?: string
           updated_at?: string
         }
@@ -882,6 +974,39 @@ export type Database = {
         Returns: boolean
       }
       is_staff: { Args: { _user_id?: string }; Returns: boolean }
+      read_guest_event: {
+        Args: { session_hash: string }
+        Returns: {
+          access_version: number
+          address: string
+          code_hash: string
+          contact_email: string
+          created_at: string
+          description: string
+          details: Json
+          ends_at: string
+          hero: Json
+          id: string
+          is_locked: boolean
+          is_published: boolean
+          location_name: string
+          starts_at: string
+          subtitle: string
+          timezone: string
+          title: string
+          updated_at: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "private_events"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
+      redeem_event_invite: {
+        Args: { invite_hash: string; session_hash: string }
+        Returns: string
+      }
     }
     Enums: {
       app_role:
