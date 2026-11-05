@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Boxes, Download, Factory, FileText, Home, Inbox, Layers, LayoutDashboard,
-  LogOut, Menu, Printer, Shirt, ShoppingBag, Tag,
+   LogOut, Menu, Printer, Shirt, ShoppingBag, Tag, CalendarDays,
 } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
@@ -46,6 +46,7 @@ const NAV_GROUPS = [
     label: "Site",
     items: [
       { to: "/admin/homepage", label: "Homepage", icon: Home },
+      { to: "/admin/events", label: "Private Events", icon: CalendarDays },
       { to: "/admin/pages", label: "Pages", icon: FileText },
       { to: "/admin/navigation", label: "Menus & Footer", icon: Menu },
       { to: "/admin/export", label: "Export & Guide", icon: Download },

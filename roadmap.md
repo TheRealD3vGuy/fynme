@@ -8,6 +8,7 @@
 - QoL: free-shipping bar, size guide dialog, low-stock badges, quick add, recently viewed, forgot-password + reset page
 
 ## Open
+- [ ] Private events: secure invite access, staff editor/lockout, media headers, calendar and directions, verification.
 - [ ] Browser-verify: receipt printer, quick add, size guide, free-shipping bar, forgot-password email end-to-end
 - [ ] Stripe checkout + webhooks (needs Pro plan / keys; verify server-side only)
 - [ ] Free-shipping threshold is placeholder $75 — confirm real amount with owner

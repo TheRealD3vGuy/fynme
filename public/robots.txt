@@ -1,14 +1,19 @@
 User-agent: Googlebot
+Disallow: /privevents
 Allow: /
 
 User-agent: Bingbot
+Disallow: /privevents
 Allow: /
 
 User-agent: Twitterbot
+Disallow: /privevents
 Allow: /
 
 User-agent: facebookexternalhit
+Disallow: /privevents
 Allow: /
 
 User-agent: *
+Disallow: /privevents
 Allow: /
