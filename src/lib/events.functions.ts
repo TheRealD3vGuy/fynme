@@ -31,6 +31,12 @@ export const savePrivateEvent = createServerFn({ method: "POST" }).middleware([r
   if (result.error) throw new Error(result.error.code === "23505" ? "That invite code is already in use." : "Unable to save event. Check your permissions.");
   return result.data;
 });
+export const listPrivateEvents = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
+  // Staff-only listing; RLS scopes this to editor roles.
+  const { data, error } = await context.supabase.from("private_events").select("*").order("starts_at", { ascending: false });
+  if (error) throw new Error("Unable to load events.");
+  return data;
+});
 export const lockPrivateEvent = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth]).inputValidator(d => z.object({ id: z.string().uuid(), locked: z.boolean() }).parse(d)).handler(async ({ data, context }) => {
   const { error } = await context.supabase.from("private_events").update({ is_locked: data.locked }).eq("id", data.id).select("id").single();
   if (error) throw new Error("Unable to change event access.");
