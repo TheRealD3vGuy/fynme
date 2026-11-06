@@ -179,15 +179,15 @@ function EventsAdmin() {
           )}
           {form.hero.media_type === "slideshow" && (
             <div className="space-y-3">
-              {form.hero.slides.map((slide, i) => (
+              {(form.hero.slides ?? []).map((slide, i) => (
                 <div key={i} className="flex items-start gap-2">
                   <div className="flex-1">
-                    <ImageDrop label={`Slide ${i + 1}`} value={slide} onChange={(url) => setHero({ slides: form.hero.slides.map((s, j) => (j === i ? url : s)) })} bucket="event-media" privatePath />
+                    <ImageDrop label={`Slide ${i + 1}`} value={slide} onChange={(url) => setHero({ slides: (form.hero.slides ?? []).map((s, j) => (j === i ? url : s)) })} bucket="event-media" privatePath />
                   </div>
-                  <Button type="button" size="icon" variant="ghost" aria-label={`Remove slide ${i + 1}`} onClick={() => setHero({ slides: form.hero.slides.filter((_, j) => j !== i) })}><Trash2 className="h-4 w-4" /></Button>
+                  <Button type="button" size="icon" variant="ghost" aria-label={`Remove slide ${i + 1}`} onClick={() => setHero({ slides: (form.hero.slides ?? []).filter((_, j) => j !== i) })}><Trash2 className="h-4 w-4" /></Button>
                 </div>
               ))}
-              <Button type="button" variant="outline" size="sm" onClick={() => setHero({ slides: [...form.hero.slides, ""] })}><Plus className="h-4 w-4" /> Add slide</Button>
+              <Button type="button" variant="outline" size="sm" onClick={() => setHero({ slides: [...(form.hero.slides ?? []), ""] })}><Plus className="h-4 w-4" /> Add slide</Button>
               <div className="w-48"><Label>Seconds per slide</Label><Input type="number" min={2} max={30} value={form.hero.slide_seconds} onChange={(e) => setHero({ slide_seconds: Number(e.target.value) || 5 })} /></div>
             </div>
           )}
