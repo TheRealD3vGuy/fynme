@@ -8,6 +8,7 @@
 - QoL: free-shipping bar, size guide dialog, low-stock badges, quick add, recently viewed, forgot-password + reset page
 
 ## Open
+- [ ] Private event guest RSVPs and staff-only AI planning summaries; verify submission, privacy and real AI output.
 - [x] Private events: /privevents invite-code gate, staff editor with media headers, lock/kick-out, calendar + directions — browser-verified end to end.
 - [ ] Browser-verify: receipt printer, quick add, size guide, free-shipping bar, forgot-password email end-to-end
 - [ ] Stripe checkout + webhooks (needs Pro plan / keys; verify server-side only)

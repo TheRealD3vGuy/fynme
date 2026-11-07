@@ -285,6 +285,95 @@ export type Database = {
           },
         ]
       }
+      event_planning_summaries: {
+        Row: {
+          ai_block_reason: string
+          ai_block_status: number | null
+          event_id: string
+          generated_at: string | null
+          source_fingerprint: string
+          summary: string
+        }
+        Insert: {
+          ai_block_reason?: string
+          ai_block_status?: number | null
+          event_id: string
+          generated_at?: string | null
+          source_fingerprint?: string
+          summary?: string
+        }
+        Update: {
+          ai_block_reason?: string
+          ai_block_status?: number | null
+          event_id?: string
+          generated_at?: string | null
+          source_fingerprint?: string
+          summary?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_planning_summaries_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: true
+            referencedRelation: "private_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_rsvps: {
+        Row: {
+          consent: boolean
+          dietary_requirements: string
+          event_id: string
+          guest_name: string
+          id: string
+          notes: string
+          party_size: number
+          response: string
+          session_hash: string
+          updated_at: string
+        }
+        Insert: {
+          consent: boolean
+          dietary_requirements?: string
+          event_id: string
+          guest_name: string
+          id?: string
+          notes?: string
+          party_size?: number
+          response: string
+          session_hash: string
+          updated_at?: string
+        }
+        Update: {
+          consent?: boolean
+          dietary_requirements?: string
+          event_id?: string
+          guest_name?: string
+          id?: string
+          notes?: string
+          party_size?: number
+          response?: string
+          session_hash?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_rsvps_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "private_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_rsvps_session_hash_fkey"
+            columns: ["session_hash"]
+            isOneToOne: false
+            referencedRelation: "event_guest_sessions"
+            referencedColumns: ["token_hash"]
+          },
+        ]
+      }
       inventory_adjustments: {
         Row: {
           created_at: string
@@ -966,6 +1055,27 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      guest_rsvp: {
+        Args: { payload?: Json; session_hash: string }
+        Returns: {
+          consent: boolean
+          dietary_requirements: string
+          event_id: string
+          guest_name: string
+          id: string
+          notes: string
+          party_size: number
+          response: string
+          session_hash: string
+          updated_at: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "event_rsvps"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
